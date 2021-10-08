@@ -15,10 +15,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-  CD:
-    needs: CI
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    steps:
       - name: Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: ./scripts/release

@@ -1,0 +1,22 @@
+name: CICD
+on: [push]
+jobs:
+  Validate:
+    runs-on: ubuntu-latest
+    env:
+      PUSH_TO_MAIN: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+
+      - name: Set Up NodeJs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.17.4'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Release
+        if: ${{ env.PUSH_TO_MAIN }}
+        run: ./scripts/release

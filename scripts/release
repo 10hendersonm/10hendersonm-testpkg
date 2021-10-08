@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Create release
+npx standard-version --dry-run
+
+# Push to GitHub
+git push --follow-tags origin main
+
+# Release to npm
+npm publish

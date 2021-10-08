@@ -23,7 +23,7 @@ jobs:
           git config --local user.name "10hendersonm"
           git config --local user.email "10hendersonm@gmail.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
-          npx standard-version --releaseCommitMessageFormat "chore(release): {{currentTag}} [SKIP CI]"
+          npx standard-version --releaseCommitMessageFormat "chore(release): {{currentTag}} [skip ci]"
           git push --follow-tags origin main
           npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm publish

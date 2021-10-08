@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Configure
+git config --global user.name "10hendersonm"
+git config --global user.email "10hendersonm@gmail.com"
+
 # Create release
 npx standard-version --releaseCommitMessageFormat "chore(release): {{currentTag}} [SKIP CI]"
 

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Exit script on failures
+set -e
+
 # Configure
 git config --global user.name "10hendersonm"
 git config --global user.email "10hendersonm@gmail.com"

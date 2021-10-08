@@ -17,6 +17,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+
       - name: Release
         if: ${{ env.PUSH_TO_MAIN }}
         run: ./scripts/release

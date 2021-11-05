@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Display input commands
+set -x
+
 # Configure Git
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 git config --local user.name "$GH_USER"
@@ -9,11 +12,11 @@ git remote set-url origin "https://x-access-token:$GH_TOKEN@github.com/$GITHUB_R
 # Create the release
 npx standard-version --releaseCommitMessageFormat "chore(release): {{currentTag}} [skip ci]"
 
-# Push the release
-git push --follow-tags origin main
-
 # Configure NPM
 npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
 
 # Publish
 npm publish
+
+# Push the release
+git push --follow-tags origin $GIT_BRANCH

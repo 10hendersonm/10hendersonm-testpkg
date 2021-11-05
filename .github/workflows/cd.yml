@@ -26,7 +26,7 @@ jobs:
         env:
           cache-name: deployment-cache
         with:
-          path: '.'
+          path: './**/*'
           key: ${{ github.event.workflow_run.head_sha }} # commit hash
 
       - name: List files

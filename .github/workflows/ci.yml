@@ -34,5 +34,5 @@ jobs:
         env:
           cache-name: deployment-cache
         with:
-          path: '.'
+          path: './**/*'
           key: ${{ github.event.after }} # commit hash

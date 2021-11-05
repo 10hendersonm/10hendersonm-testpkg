@@ -29,6 +29,9 @@ jobs:
           path: '.'
           key: ${{ github.event.workflow_run.head_sha }} # commit hash
 
+      - name: List files
+        run: ls -a
+
       - name: Release
         env:
           GH_EMAIL: ${{ secrets.GH_EMAIL }}

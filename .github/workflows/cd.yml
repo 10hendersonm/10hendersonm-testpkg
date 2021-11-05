@@ -52,12 +52,13 @@ jobs:
           npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
 
       - name: Publish NPM Package
+        id: publish
         run: |
           exit 1
           npm publish
 
       - name: Revert Git Release
-        if: failure() && steps.publishNPMPackage.outcome == 'failure'
+        if: failure() && steps.publish.outcome == 'failure'
         run: |
           NEW_TAG=$(git tag --points-at HEAD)
           

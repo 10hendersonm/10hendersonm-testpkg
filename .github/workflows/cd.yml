@@ -1,0 +1,39 @@
+name: CD
+
+# Only trigger, when the build workflow succeeded
+on:
+  workflow_run:
+    workflows: 
+      - CI
+    branches:
+      - main
+    types:
+      - completed
+
+jobs:
+  Deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      # - name: Set Up NodeJs
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14.17.4'
+
+      - name: Deployment Cache
+        uses: actions/cache@v2
+        env:
+          cache-name: deployment-cache
+        with:
+          path: ./
+          key: ${{ github.event.after }} # commit hash
+
+      - name: Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_EMAIL: ${{ secrets.GH_EMAIL }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USER: ${{ secrets.GH_USER }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: ./scripts/release

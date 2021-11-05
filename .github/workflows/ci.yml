@@ -24,9 +24,6 @@ jobs:
 
       # - name: Build
       #   run: npm run build
-      
-      - name: Fail
-        run: exit 1
 
       - name: Deployment Cache
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
@@ -34,5 +31,5 @@ jobs:
         env:
           cache-name: deployment-cache
         with:
-          path: ./
+          path: '.'
           key: ${{ github.event.after }} # commit hash

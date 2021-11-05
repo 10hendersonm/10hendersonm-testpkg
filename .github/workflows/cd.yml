@@ -21,15 +21,12 @@ jobs:
       #   with:
       #     node-version: '14.17.4'
 
-      - name: Log Event
-        run: echo ${{ toJson(github) }}
-
       - name: Deployment Cache
         uses: actions/cache@v2
         env:
           cache-name: deployment-cache
         with:
-          path: ./
+          path: '.'
           key: ${{ github.event.workflow_run.head_sha }} # commit hash
 
       - name: Release

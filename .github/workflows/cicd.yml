@@ -34,7 +34,7 @@ jobs:
           cache-name: deployment-cache
         with:
           path: './**/*'
-          key: ${{ github.event.after }} # commit hash
+          key: ${{ github.event.after }}
 
   Deploy:
     needs: Validate
@@ -47,7 +47,7 @@ jobs:
           cache-name: deployment-cache
         with:
           path: './**/*'
-          key: ${{ github.event.workflow_run.head_sha }} # commit hash
+          key: ${{ github.event.after }}
 
       - name: Configure Git
         env:

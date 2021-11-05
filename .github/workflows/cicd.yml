@@ -19,11 +19,9 @@ jobs:
 
       - name: Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config --local user.name "10hendersonm"
-          git config --local user.email "10hendersonm@gmail.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}
-          npx standard-version --releaseCommitMessageFormat "chore(release): {{currentTag}} [skip ci]"
-          git push --follow-tags origin main
-          npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm publish
+        env:
+          GH_EMAIL: ${{ secrets.GH_EMAIL }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USER: ${{ secrets.GH_USER }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: ./scripts/release

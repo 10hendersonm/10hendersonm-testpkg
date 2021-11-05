@@ -7,7 +7,7 @@ set -x # Display input commands
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 git config --local user.name "$GH_USER"
 git config --local user.email "$GH_EMAIL"
-git remote set-url origin "https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY"
+git remote set-url origin "https://$GH_TOKEN@github.com/$GITHUB_REPOSITORY"
 
 # Create the release
 npx standard-version --releaseCommitMessageFormat "chore(release): {{currentTag}} [skip ci]"

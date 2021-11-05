@@ -27,7 +27,7 @@ jobs:
       # - name: Build
       #   run: npm run build
 
-      - name: Deployment Cache
+      - name: Cache Deployment
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: actions/cache@v2
         env:

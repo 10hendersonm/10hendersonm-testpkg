@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Set Up NodeJs
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '14.17.4'
+      - name: Set Up NodeJs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.17.4'
 
       - name: Deployment Cache
         uses: actions/cache@v2
@@ -29,8 +29,9 @@ jobs:
           path: './**/*'
           key: ${{ github.event.workflow_run.head_sha }} # commit hash
 
-      - name: List files
-        run: ls -a
+      - name: Log
+        run: |
+          git remote -v
 
       - name: Release
         env:

@@ -53,6 +53,7 @@ jobs:
 
       - name: Publish NPM Package
         run: |
+          exit 1
           npm publish
 
       - name: Revert Git Release

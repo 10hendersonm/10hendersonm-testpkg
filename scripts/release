@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# Display input commands
-set -x
+set -e # Exit on failures
+set -x # Display input commands
 
 # Configure Git
 GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)

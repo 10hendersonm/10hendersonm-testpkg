@@ -27,10 +27,9 @@ jobs:
           cache-name: deployment-cache
         with:
           path: ./
-          key: ${{ github.event.after }} # commit hash
+          key: ${{ github.event.workflow_run.head_sha }} # commit hash
 
       - name: Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_EMAIL: ${{ secrets.GH_EMAIL }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

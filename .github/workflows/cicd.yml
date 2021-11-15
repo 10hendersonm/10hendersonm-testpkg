@@ -80,7 +80,6 @@ jobs:
       - name: Publish NPM Package
         id: publish
         run: |
-          exit 1
           npm publish
 
       - name: Revert Git Release

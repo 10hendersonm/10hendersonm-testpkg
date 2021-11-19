@@ -51,6 +51,8 @@ jobs:
           key: ${{ github.event.after }}
 
       - name: Check PR Labels
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           npm run release:check
 

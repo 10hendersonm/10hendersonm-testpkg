@@ -32,22 +32,32 @@
         q: searchQuery,
       })
 
+      const skipReleaseLabel = 'skip release'
       if (
         // if any PRs attributed to this SHA have a `skip release` label
         prs.some(({ labels }) =>
-          labels.find(({ name }) => name === 'skip release'),
+          labels.find(({ name }) => name === skipReleaseLabel),
         )
       ) {
-        
-        await gh.actions.cancelWorkflowRun({
-          owner,
-          repo,
-          run_id: GITHUB_RUN_ID,
-        })
-  
-        // Block the next (publish) job from running
-        const timeout = 10 * 60 * 1000 // 10 minutes
-        await new Promise((resolve) => setTimeout(resolve, timeout))
+        console.log(
+          `Identified matching PR with "${skipReleaseLabel}" label. Cancelling deployment.`,
+        )
+        try {
+          await gh.actions.cancelWorkflowRun({
+            owner,
+            repo,
+            run_id: GITHUB_RUN_ID,
+          })
+
+          // Block the next (publish) job from running
+          const timeout = 10 * 60 * 1000 // 10 minutes
+          await new Promise((resolve) => setTimeout(resolve, timeout))
+        } catch (err) {
+          if (err) {
+            console.log('Error while cancelling workflow run')
+            return process.exit(1)
+          }
+        }
       }
     },
     save: async () => {
@@ -81,13 +91,18 @@
 
       const gh = new Octokit({ auth: GH_TOKEN })
 
-      await gh.repos.createRelease({
-        owner,
-        repo,
-        tag_name: currentTag,
-        name: currentTag.replace(/^v/i, ''),
-        body: releaseText,
-      })
+      try {
+        await gh.repos.createRelease({
+          owner,
+          repo,
+          tag_name: currentTag,
+          name: currentTag.replace(/^v/i, ''),
+          body: releaseText,
+        })
+      } catch {
+        console.log('Error while creating release')
+        return process.exit(1)
+      }
     },
   }
 

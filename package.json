@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "npx standard-version --releaseCommitMessageFormat \"chore(release): {{currentTag}} [skip ci]\" --scripts.postchangelog \"npm run release:save\"",
-    "release:save": "node scripts/release-notes save release/new-release.md",
-    "release:post": "node scripts/release-notes post release/new-release.md"
+    "release:check": "node scripts/release check",
+    "release:save": "node scripts/release save release/new-release.md",
+    "release:post": "node scripts/release post release/new-release.md"
   },
   "repository": {
     "type": "git",

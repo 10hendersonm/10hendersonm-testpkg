@@ -8,8 +8,11 @@
 
   const actions = {
     check: async () => {
-      const { GITHUB_REPOSITORY, GH_TOKEN, GITHUB_SHA, GITHUB_ENV } =
+      const { GITHUB_REPOSITORY, GH_TOKEN, GITHUB_SHA, GITHUB_RUN_ID } =
         process.env
+
+      const { owner, repo } =
+        /^(?<owner>[^/]+)\/(?<repo>.*)$/.exec(GITHUB_REPOSITORY)?.groups || {}
 
       const gh = new Octokit({ auth: GH_TOKEN })
 
@@ -29,19 +32,22 @@
         q: searchQuery,
       })
 
-      if (prs.length === 1) {
-        const pr = prs[0]
-
-        const skipRelease = !!pr.labels.find(
-          (label) => label.name === 'skip release',
+      if (
+        // if any PRs attributed to this SHA have a `skip release` label
+        prs.some(({ labels }) =>
+          labels.find(({ name }) => name === 'skip release'),
         )
-
-        if (skipRelease) {
-          // write to Github ENV file for consumption in later step(s)
-          fs.appendFileSync(GITHUB_ENV, 'SKIP_RELEASE=true')
-        }
-      } else {
-        // Zero or multiple PRs found. Do nothing.
+      ) {
+        
+        await gh.actions.cancelWorkflowRun({
+          owner,
+          repo,
+          run_id: GITHUB_RUN_ID,
+        })
+  
+        // Block the next (publish) job from running
+        const timeout = 10 * 60 * 1000 // 10 minutes
+        await new Promise((resolve) => setTimeout(resolve, timeout))
       }
     },
     save: async () => {

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/10hendersonm/10hendersonm-testpkg/compare/v1.2.1...v1.3.0) (2021-11-19)
+
+
+### Features
+
+* Increments hello world count ([e5be76f](https://github.com/10hendersonm/10hendersonm-testpkg/commit/e5be76f65c871dd7542006d909ff27e6b5e1f62d))
+
 ### [1.2.1](https://github.com/10hendersonm/10hendersonm-testpkg/compare/v1.2.0...v1.2.1) (2021-11-19)
 
 ## [1.2.0](https://github.com/10hendersonm/10hendersonm-testpkg/compare/v1.1.2...v1.2.0) (2021-11-19)

@@ -1,10 +1,13 @@
 {
   "name": "10hendersonm-testpkg",
-  "version": "1.0.29",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "npx standard-version --releaseCommitMessageFormat \"chore(release): {{currentTag}} [skip ci]\" --scripts.postchangelog \"npm run release:save\"",
+    "release:save": "node scripts/release-notes save release/new-release.md",
+    "release:post": "node scripts/release-notes post release/new-release.md"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,7 @@
   },
   "homepage": "https://github.com/10hendersonm/10hendersonm-testpkg#readme",
   "devDependencies": {
+    "@octokit/rest": "^18.12.0",
     "standard-version": "^9.3.1"
   }
 }

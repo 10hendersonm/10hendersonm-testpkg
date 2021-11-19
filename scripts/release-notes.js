@@ -7,6 +7,43 @@
   const [_node, _thisScript, action, fileName] = process.argv
 
   const actions = {
+    check: async () => {
+      const { GITHUB_REPOSITORY, GH_TOKEN, GITHUB_SHA, GITHUB_ENV } =
+        process.env
+
+      const gh = new Octokit({ auth: GH_TOKEN })
+
+      const searchParams = {
+        is: 'pr',
+        repo: GITHUB_REPOSITORY,
+        sha: GITHUB_SHA,
+      }
+
+      const searchQuery = Object.entries(searchParams)
+        .map(([key, value]) => `${key}:${value}`)
+        .join(' ')
+
+      const {
+        data: { items: prs },
+      } = await gh.search.issuesAndPullRequests({
+        q: searchQuery,
+      })
+
+      if (prs.length === 1) {
+        const pr = prs[0]
+
+        const skipRelease = !!pr.labels.find(
+          (label) => label.name === 'skip release',
+        )
+
+        if (skipRelease) {
+          // write to Github ENV file for consumption in later step(s)
+          fs.appendFileSync(GITHUB_ENV, 'SKIP_RELEASE=true')
+        }
+      } else {
+        // Zero or multiple PRs found. Do nothing.
+      }
+    },
     save: async () => {
       const changelogDiff = execSync('git diff CHANGELOG.md', {
         encoding: 'utf-8',

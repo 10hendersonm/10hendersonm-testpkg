@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.1.2 (2021-11-19)
+
 ### 1.1.1 (2021-11-19)
 
 ## [1.1.0](https://github.com/10hendersonm/10hendersonm-testpkg/compare/v1.0.29...v1.1.0) (2021-11-19)

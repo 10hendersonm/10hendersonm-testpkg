@@ -7,6 +7,49 @@
   const [_node, _thisScript, action, fileName] = process.argv
 
   const actions = {
+    check: async () => {
+      const { GITHUB_REPOSITORY, GH_TOKEN, GITHUB_SHA, GITHUB_RUN_ID } =
+        process.env
+
+      const { owner, repo } =
+        /^(?<owner>[^/]+)\/(?<repo>.*)$/.exec(GITHUB_REPOSITORY)?.groups || {}
+
+      const gh = new Octokit({ auth: GH_TOKEN })
+
+      const searchParams = {
+        is: 'pr',
+        repo: GITHUB_REPOSITORY,
+        sha: GITHUB_SHA,
+      }
+
+      const searchQuery = Object.entries(searchParams)
+        .map(([key, value]) => `${key}:${value}`)
+        .join(' ')
+
+      const {
+        data: { items: prs },
+      } = await gh.search.issuesAndPullRequests({
+        q: searchQuery,
+      })
+
+      if (
+        // if any PRs attributed to this SHA have a `skip release` label
+        prs.some(({ labels }) =>
+          labels.find(({ name }) => name === 'skip release'),
+        )
+      ) {
+        
+        await gh.actions.cancelWorkflowRun({
+          owner,
+          repo,
+          run_id: GITHUB_RUN_ID,
+        })
+  
+        // Block the next (publish) job from running
+        const timeout = 10 * 60 * 1000 // 10 minutes
+        await new Promise((resolve) => setTimeout(resolve, timeout))
+      }
+    },
     save: async () => {
       const changelogDiff = execSync('git diff CHANGELOG.md', {
         encoding: 'utf-8',

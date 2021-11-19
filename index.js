@@ -1,3 +1,3 @@
 module.exports = () => {
-  console.log('Hello world 5')
+  console.log('Hello world 6')
 }
